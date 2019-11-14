@@ -31,6 +31,7 @@
         android:layout_marginStart="20dp"
         android:layout_marginBottom="16dp"
         android:src="@mipmap/ic_comment_black_48px"
+        android:onClick="CommentClick"
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintStart_toStartOf="parent" />
 
@@ -41,6 +42,7 @@
         android:layout_marginEnd="16dp"
         android:layout_marginBottom="16dp"
         android:src="@mipmap/ic_history_black"
+        android:onClick="buttonClick"
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintEnd_toEndOf="parent" />
 

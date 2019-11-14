@@ -10,7 +10,7 @@ public class Mood {
     public static final int MOOD_NORMAL = 2;
     public static final int MOOD_HAPPY = 3;
     public static final int MOOD_SUPER_HAPPY = 4;
-
+    public static final String NO_MESSAGE = "";
 
     public Mood(int mood, String dateMood, String messageMood) {
         mMood = mood;
