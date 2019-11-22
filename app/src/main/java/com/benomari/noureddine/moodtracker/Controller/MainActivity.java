@@ -3,11 +3,13 @@ package com.benomari.noureddine.moodtracker.Controller;
 import android.app.AlarmManager;
 import android.app.AlertDialog;
 import android.app.PendingIntent;
+import android.app.job.JobInfo;
+import android.app.job.JobScheduler;
+import android.content.ComponentName;
 import android.content.Context;
 import android.content.DialogInterface;
 import android.content.Intent;
 import android.content.SharedPreferences;
-import android.os.SystemClock;
 import android.support.constraint.ConstraintLayout;
 import android.support.v4.view.GestureDetectorCompat;
 import android.support.v7.app.AppCompatActivity;
@@ -16,13 +18,16 @@ import android.util.Log;
 import android.view.GestureDetector;
 import android.view.MotionEvent;
 import android.view.View;
+import android.widget.Button;
 import android.widget.EditText;
 import android.widget.ImageView;
 import android.widget.Toast;
 
 import com.benomari.noureddine.moodtracker.Model.Mood;
 import com.benomari.noureddine.moodtracker.R;
+import com.google.gson.Gson;
 
+import java.util.ArrayList;
 import java.util.Calendar;
 
 import butterknife.BindView;
@@ -34,10 +39,15 @@ public class MainActivity extends AppCompatActivity implements GestureDetector.O
     private SharedPreferences preferences;
     private AlarmManager alarmMgr;
     private PendingIntent alarmIntent;
+    private ArrayList<Mood> mMoods = new ArrayList<>();
+
+
+
 
 
     @BindView(R.id.main_layout) ConstraintLayout constraintLayout;
     @BindView(R.id.mood_smiley) ImageView mood_smiley;
+    @BindView(R.id.button) Button button;
     @BindView(R.id.mood_comment) ImageView mood_comment_button;
     @BindView(R.id.mood_history) ImageView mood_history_button;
 
@@ -52,13 +62,51 @@ public class MainActivity extends AppCompatActivity implements GestureDetector.O
         ButterKnife.bind(this);
         preferences = this.getSharedPreferences("PREFS",0);
 
+
+
     }
     public void buttonClick(View view){
         Intent historyActivityIntent = new Intent(MainActivity.this, HistoryActivity.class);
         startActivity(historyActivityIntent);
         }
-    public void CommentClick(View view){
+    public void commentClick(View view){
         showCommentDialog();
+    }
+
+    public void addMood(){
+        SharedPreferences prefs = this.getSharedPreferences("PREFS",0);
+        int onScreenMood = prefs.getInt("Mood", 3);
+        String comment = prefs.getString("Comment","") ;
+        makeMoodList(mMoods,prefs,onScreenMood, comment);
+        Log.d("TAG",String.valueOf(mMoods));
+    }
+
+    public void addMoodButton(View view){
+        SharedPreferences prefs = this.getSharedPreferences("PREFS",0);
+        int onScreenMood = prefs.getInt("Mood", 3);
+        String comment = prefs.getString("Comment","") ;
+        makeMoodList(mMoods,prefs,onScreenMood, comment);
+        Log.d("TAG",String.valueOf(mMoods));
+    }
+    private void clearList(ArrayList<Mood> moods){
+        if (moods.size() > 6){
+            moods.clear();
+        }
+
+    }
+
+
+    private void makeMoodList(ArrayList<Mood> moods,SharedPreferences prefs,int moodToSave, String messageToSave){
+        Mood mood = new Mood(moodToSave,messageToSave);
+        SharedPreferences.Editor editor = prefs.edit();
+        Gson gson = new Gson();
+        moods.add(mood);
+        String json = gson.toJson(moods);
+        editor.putString("MoodList", json);
+        editor.apply();
+        clearList(moods);
+
+
     }
 
 
@@ -101,15 +149,19 @@ public class MainActivity extends AppCompatActivity implements GestureDetector.O
     }
     private void configureAlarm(){
 
-    alarmMgr = (AlarmManager)this.getSystemService(Context.ALARM_SERVICE);
-    Intent intent = new Intent(this, AlarmReceiver.class);
-    alarmIntent = PendingIntent.getBroadcast(this, 0, intent, 0);
-    Calendar calendar = Calendar.getInstance();
+        alarmMgr = (AlarmManager)MainActivity.this.getSystemService(Context.ALARM_SERVICE);
+        Intent intent = new Intent(MainActivity.this, AlarmReceiver.class);
+        intent.setClass(this, AlarmReceiver.class);
+        alarmIntent = PendingIntent.getBroadcast(MainActivity.this, 0, intent, PendingIntent.FLAG_UPDATE_CURRENT);
+
+        Calendar calendar = Calendar.getInstance();
         calendar.setTimeInMillis(System.currentTimeMillis());
         calendar.set(Calendar.HOUR_OF_DAY, 23);
 
-        alarmMgr.setInexactRepeating(AlarmManager.RTC_WAKEUP,System.currentTimeMillis(), AlarmManager.INTERVAL_DAY, alarmIntent);
-        Toast.makeText(this, "Alarm set", Toast.LENGTH_LONG).show();
+
+        alarmMgr.setExact(AlarmManager.RTC_WAKEUP, calendar.getTimeInMillis(), alarmIntent);
+        Toast.makeText(this,"ALARM SET",Toast.LENGTH_SHORT).show();
+
 
 
     }

@@ -28,7 +28,7 @@ public class HistoryActivity extends AppCompatActivity {
     @BindView(R.id.list) RecyclerView mListMood;
 
 
-    private ArrayList<Mood> moods = new ArrayList<>();
+    private ArrayList<Mood> moods;
     private MoodAdapter adapter;
 
     private static final String PREFS = "PREFS";
@@ -39,28 +39,33 @@ public class HistoryActivity extends AppCompatActivity {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_history);
         ButterKnife.bind(this);
-        retrievePreferences();
-        showMoods();
+        configureRecyclerView();
         configureOnClickRecyclerView();
-
-    }
-
-    // Retrieve SharedPreferences
-    private void retrievePreferences(){
         mPreferences = this.getSharedPreferences(PREFS, MODE_PRIVATE);
-    }
+        showMoods();
 
-    // Display the moods history
-    private void showMoods(){
-        Gson gson = new Gson();
-        /*String json = mPreferences.getString("Mood","");*/
-        String jsonMood = mPreferences.getString("MoodList","");
-        Type type = new TypeToken<ArrayList<Mood>>(){}.getType();
-        moods = gson.fromJson(jsonMood,type);
-        Log.e("TAG", String.valueOf(moods));
-        adapter = new MoodAdapter(moods);
+
+    }
+    private void configureRecyclerView() {
+        moods = new ArrayList<>();
+        this.adapter = new MoodAdapter(moods);
         this.mListMood.setAdapter(this.adapter);
         this.mListMood.setLayoutManager(new LinearLayoutManager(this));
+    }
+
+
+
+    // Display the moods history
+    private void showMoods() {
+        Gson gson = new Gson();
+        String jsonMood = mPreferences.getString("MoodList", "");
+        Type type = new TypeToken<ArrayList<Mood>>() {
+        }.getType();
+        ArrayList<Mood> moods1 = gson.fromJson(jsonMood, type);
+        moods.addAll(moods1);
+        Log.d("MOODSHISTORY",String.valueOf(moods));
+        adapter.notifyDataSetChanged();
+
     }
     private void configureOnClickRecyclerView(){
         ItemClickSupport.addTo(mListMood, R.layout.history_main_item)
