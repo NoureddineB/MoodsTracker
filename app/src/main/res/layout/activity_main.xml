@@ -12,13 +12,13 @@
 
     <ImageView
         android:id="@+id/mood_smiley"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
+        android:layout_width="249dp"
+        android:layout_height="256dp"
         android:layout_marginStart="8dp"
         android:layout_marginTop="8dp"
         android:layout_marginEnd="8dp"
         android:layout_marginBottom="8dp"
-        android:src="@mipmap/smiley_happy"
+        android:src="@drawable/smiley_happy"
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
@@ -26,40 +26,26 @@
 
     <ImageView
         android:id="@+id/mood_comment"
-        android:layout_width="73dp"
-        android:layout_height="65dp"
+        android:layout_width="55dp"
+        android:layout_height="46dp"
         android:layout_marginStart="20dp"
         android:layout_marginBottom="16dp"
-        android:src="@mipmap/ic_comment_black_48px"
         android:onClick="commentClick"
+        android:src="@drawable/ic_note_add_black"
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintStart_toStartOf="parent" />
 
     <ImageView
         android:id="@+id/mood_history"
-        android:layout_width="65dp"
-        android:layout_height="69dp"
+        android:layout_width="56dp"
+        android:layout_height="46dp"
         android:layout_marginEnd="16dp"
         android:layout_marginBottom="16dp"
-        android:src="@mipmap/ic_history_black"
         android:onClick="buttonClick"
+        android:src="@drawable/ic_history_black"
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintEnd_toEndOf="parent" />
 
-    <Button
-        android:id="@+id/button"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:layout_marginStart="8dp"
-        android:layout_marginTop="8dp"
-        android:layout_marginEnd="8dp"
-        android:layout_marginBottom="8dp"
-        android:text="Button"
-        android:onClick="addMoodButton"
-        app:layout_constraintBottom_toBottomOf="parent"
-        app:layout_constraintEnd_toStartOf="@+id/mood_history"
-        app:layout_constraintStart_toEndOf="@+id/mood_comment"
-        app:layout_constraintTop_toBottomOf="@+id/mood_smiley" />
 
 
 </android.support.constraint.ConstraintLayout>

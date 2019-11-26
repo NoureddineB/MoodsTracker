@@ -59,10 +59,12 @@ public class HistoryActivity extends AppCompatActivity {
     private void showMoods() {
         Gson gson = new Gson();
         String jsonMood = mPreferences.getString("MoodList", "");
-        Type type = new TypeToken<ArrayList<Mood>>() {
-        }.getType();
-        ArrayList<Mood> moods1 = gson.fromJson(jsonMood, type);
-        moods.addAll(moods1);
+        if (jsonMood.equals("")) {
+            Type type = new TypeToken<ArrayList<Mood>>() {
+            }.getType();
+            ArrayList<Mood> moods1 = gson.fromJson(jsonMood, type);
+            moods.addAll(moods1);
+        }
         Log.d("MOODSHISTORY",String.valueOf(moods));
         adapter.notifyDataSetChanged();
 

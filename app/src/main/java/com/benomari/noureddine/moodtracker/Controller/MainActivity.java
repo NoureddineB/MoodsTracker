@@ -47,7 +47,6 @@ public class MainActivity extends AppCompatActivity implements GestureDetector.O
 
     @BindView(R.id.main_layout) ConstraintLayout constraintLayout;
     @BindView(R.id.mood_smiley) ImageView mood_smiley;
-    @BindView(R.id.button) Button button;
     @BindView(R.id.mood_comment) ImageView mood_comment_button;
     @BindView(R.id.mood_history) ImageView mood_history_button;
 
@@ -81,13 +80,6 @@ public class MainActivity extends AppCompatActivity implements GestureDetector.O
         Log.d("TAG",String.valueOf(mMoods));
     }
 
-    public void addMoodButton(View view){
-        SharedPreferences prefs = this.getSharedPreferences("PREFS",0);
-        int onScreenMood = prefs.getInt("Mood", 3);
-        String comment = prefs.getString("Comment","") ;
-        makeMoodList(mMoods,prefs,onScreenMood, comment);
-        Log.d("TAG",String.valueOf(mMoods));
-    }
     private void clearList(ArrayList<Mood> moods){
         if (moods.size() > 6){
             moods.clear();
@@ -121,23 +113,23 @@ public class MainActivity extends AppCompatActivity implements GestureDetector.O
         switch(currentMood){
             case Mood.MOOD_SAD :
                 constraintLayout.setBackgroundColor(getResources().getColor(R.color.faded_red));
-                mood_smiley.setImageResource(R.mipmap.smiley_sad);
+                mood_smiley.setImageResource(R.drawable.smiley_sad);
                 break;
             case Mood.MOOD_DISAPPOINTED :
                 constraintLayout.setBackgroundColor(getResources().getColor(R.color.warm_grey));
-                mood_smiley.setImageResource(R.mipmap.smiley_disappointed);
+                mood_smiley.setImageResource(R.drawable.smiley_disappointed);
                 break;
             case Mood.MOOD_NORMAL :
                 constraintLayout.setBackgroundColor(getResources().getColor(R.color.cornflower_blue_65));
-                mood_smiley.setImageResource(R.mipmap.smiley_normal);
+                mood_smiley.setImageResource(R.drawable.smiley_normal);
                 break;
             case Mood.MOOD_HAPPY :
                 constraintLayout.setBackgroundColor(getResources().getColor(R.color.light_sage));
-                mood_smiley.setImageResource(R.mipmap.smiley_happy);
+                mood_smiley.setImageResource(R.drawable.smiley_happy);
                 break;
             case Mood.MOOD_SUPER_HAPPY :
                 constraintLayout.setBackgroundColor(getResources().getColor(R.color.banana_yellow));
-                mood_smiley.setImageResource(R.mipmap.smiley_super_happy);
+                mood_smiley.setImageResource(R.drawable.smiley_super_happy);
                 break;
         }
         SharedPreferences.Editor editor = preferences.edit();
@@ -156,10 +148,10 @@ public class MainActivity extends AppCompatActivity implements GestureDetector.O
 
         Calendar calendar = Calendar.getInstance();
         calendar.setTimeInMillis(System.currentTimeMillis());
-        calendar.set(Calendar.HOUR_OF_DAY, 23);
+        calendar.set(Calendar.SECOND, 30);
 
 
-        alarmMgr.setExact(AlarmManager.RTC_WAKEUP, calendar.getTimeInMillis(), alarmIntent);
+        alarmMgr.set(AlarmManager.RTC_WAKEUP, calendar.getTimeInMillis(), alarmIntent);
         Toast.makeText(this,"ALARM SET",Toast.LENGTH_SHORT).show();
 
 

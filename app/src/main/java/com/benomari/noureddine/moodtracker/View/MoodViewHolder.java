@@ -93,7 +93,7 @@ class MoodViewHolder extends RecyclerView.ViewHolder {
         }
         this.itemView.setLayoutParams(params);
         if (!(mood.getMessageMood().equals(""))) {
-            mImageView.setImageResource(R.mipmap.ic_comment_black_48px);
+            mImageView.setImageResource(R.drawable.ic_comment_black_48px);
         } else {
             mImageView.setImageResource(0);
         }

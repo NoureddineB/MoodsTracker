@@ -16,6 +16,9 @@ import android.view.View;
 import com.benomari.noureddine.moodtracker.Model.Mood;
 
 import com.google.gson.Gson;
+import com.google.gson.reflect.TypeToken;
+
+import java.lang.reflect.Type;
 import java.text.DateFormat;
 import java.util.ArrayList;
 import java.util.Calendar;
@@ -28,6 +31,7 @@ public class AlarmReceiver extends BroadcastReceiver {
     private ArrayList<Mood> mMoods = new ArrayList<>();
     private AlarmManager alarmMgr;
     private PendingIntent alarmIntent;
+    Gson gson = new Gson();
 
 
     @Override
@@ -36,6 +40,11 @@ public class AlarmReceiver extends BroadcastReceiver {
         SharedPreferences prefs = context.getSharedPreferences("PREFS",0);
         int onScreenMood = prefs.getInt("Mood", 3);
         String comment = prefs.getString("Comment","") ;
+        String jsonMood = prefs.getString("MoodList", "");
+        Type type = new TypeToken<ArrayList<Mood>>() {
+        }.getType();
+        ArrayList<Mood> moods1 = gson.fromJson(jsonMood, type);
+        mMoods.addAll(moods1);
         makeMoodList(mMoods,prefs,onScreenMood, comment);
         Log.d("TAG",String.valueOf(mMoods));
         checkVersion(context);
@@ -57,21 +66,21 @@ public class AlarmReceiver extends BroadcastReceiver {
 
 
 
-    private void clearList(ArrayList<Mood> moods){
-        if (moods.size() > 6){
-            moods.clear();
+    private void clearList(ArrayList<Mood> mMoods){
+        if (mMoods.size() > 6){
+            mMoods.clear();
         }
 
     }
-    private void makeMoodList(ArrayList<Mood> moods,SharedPreferences prefs,int moodToSave, String messageToSave){
+    private void makeMoodList(ArrayList<Mood> mMoods,SharedPreferences prefs,int moodToSave, String messageToSave){
         Mood mood = new Mood(moodToSave,messageToSave);
         SharedPreferences.Editor editor = prefs.edit();
         Gson gson = new Gson();
-        moods.add(mood);
-        String json = gson.toJson(moods);
+        mMoods.add(mood);
+        String json = gson.toJson(mMoods);
         editor.putString("MoodList", json);
         editor.apply();
-        clearList(moods);
+        clearList(mMoods);
 
     }
 }
