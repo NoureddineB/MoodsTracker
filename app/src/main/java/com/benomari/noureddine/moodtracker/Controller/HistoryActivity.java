@@ -59,7 +59,7 @@ public class HistoryActivity extends AppCompatActivity {
     private void showMoods() {
         Gson gson = new Gson();
         String jsonMood = mPreferences.getString("MoodList", "");
-        if (jsonMood.equals("")) {
+        if (!jsonMood.equals("")) {
             Type type = new TypeToken<ArrayList<Mood>>() {
             }.getType();
             ArrayList<Mood> moods1 = gson.fromJson(jsonMood, type);
@@ -67,7 +67,6 @@ public class HistoryActivity extends AppCompatActivity {
         }
         Log.d("MOODSHISTORY",String.valueOf(moods));
         adapter.notifyDataSetChanged();
-
     }
     private void configureOnClickRecyclerView(){
         ItemClickSupport.addTo(mListMood, R.layout.history_main_item)
