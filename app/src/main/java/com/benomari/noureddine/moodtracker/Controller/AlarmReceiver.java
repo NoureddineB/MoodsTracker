@@ -41,10 +41,12 @@ public class AlarmReceiver extends BroadcastReceiver {
         int onScreenMood = prefs.getInt("Mood", 3);
         String comment = prefs.getString("Comment","") ;
         String jsonMood = prefs.getString("MoodList", "");
-        Type type = new TypeToken<ArrayList<Mood>>() {
-        }.getType();
-        ArrayList<Mood> moods1 = gson.fromJson(jsonMood, type);
-        mMoods.addAll(moods1);
+        if (!jsonMood.equals("")) {
+            Type type = new TypeToken<ArrayList<Mood>>() {
+            }.getType();
+            ArrayList<Mood> moods1 = gson.fromJson(jsonMood, type);
+            mMoods.addAll(moods1);
+        }
         makeMoodList(mMoods,prefs,onScreenMood, comment);
         Log.d("TAG",String.valueOf(mMoods));
         checkVersion(context);
@@ -81,6 +83,7 @@ public class AlarmReceiver extends BroadcastReceiver {
         editor.putString("MoodList", json);
         editor.apply();
         clearList(mMoods);
+
 
     }
 }
