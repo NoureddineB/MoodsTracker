@@ -42,6 +42,7 @@ public class MainActivity extends AppCompatActivity implements GestureDetector.O
     private PendingIntent alarmIntent;
 
 
+
     @BindView(R.id.main_layout)
     ConstraintLayout constraintLayout;
     @BindView(R.id.mood_smiley)
@@ -50,6 +51,7 @@ public class MainActivity extends AppCompatActivity implements GestureDetector.O
     ImageView mood_comment_button;
     @BindView(R.id.mood_history)
     ImageView mood_history_button;
+
 
 
     @Override
@@ -64,6 +66,14 @@ public class MainActivity extends AppCompatActivity implements GestureDetector.O
 
 
     }
+
+    @Override
+    protected void onResume(){
+        super.onResume();
+        mCurrentMood = preferences.getInt("Mood",Mood.MOOD_HAPPY);
+        changeCurrentMood(mCurrentMood);
+    }
+
 
     public void buttonClick(View view) {
         Intent historyActivityIntent = new Intent(MainActivity.this, HistoryActivity.class);
@@ -169,6 +179,8 @@ public class MainActivity extends AppCompatActivity implements GestureDetector.O
                 .create()
                 .show();
     }
+
+
 
 
     @Override

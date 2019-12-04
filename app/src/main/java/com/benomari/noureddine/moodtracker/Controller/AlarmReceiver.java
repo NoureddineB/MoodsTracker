@@ -36,8 +36,8 @@ public class AlarmReceiver extends BroadcastReceiver {
 
     @Override
     public void onReceive(Context context, Intent intent) {
-        Log.e("TAGITWORK","sa marche");
         SharedPreferences prefs = context.getSharedPreferences("PREFS",0);
+        SharedPreferences.Editor editor = prefs.edit();
         int onScreenMood = prefs.getInt("Mood", 3);
         String comment = prefs.getString("Comment","") ;
         String jsonMood = prefs.getString("MoodList", "");
@@ -46,9 +46,11 @@ public class AlarmReceiver extends BroadcastReceiver {
             }.getType();
             ArrayList<Mood> moods1 = gson.fromJson(jsonMood, type);
             mMoods.addAll(moods1);
+            editor.putInt("Mood",3);
+            editor.apply();
+            clearList(mMoods);
         }
         makeMoodList(mMoods,prefs,onScreenMood, comment);
-        Log.d("TAG",String.valueOf(mMoods));
         checkVersion(context);
 
 
@@ -70,7 +72,7 @@ public class AlarmReceiver extends BroadcastReceiver {
 
     private void clearList(ArrayList<Mood> mMoods){
         if (mMoods.size() > 6){
-            mMoods.clear();
+            mMoods.remove(0);
         }
 
     }
@@ -82,7 +84,7 @@ public class AlarmReceiver extends BroadcastReceiver {
         String json = gson.toJson(mMoods);
         editor.putString("MoodList", json);
         editor.apply();
-        clearList(mMoods);
+
 
 
     }

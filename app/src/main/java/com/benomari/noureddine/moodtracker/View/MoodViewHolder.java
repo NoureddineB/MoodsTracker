@@ -24,9 +24,6 @@ class MoodViewHolder extends RecyclerView.ViewHolder {
     @BindView(R.id.item_recycler_layout) RelativeLayout mRelativeLayout;
 
 
-
-
-
     MoodViewHolder(View itemView) {
         super(itemView);
         ButterKnife.bind(this, itemView);
@@ -47,25 +44,25 @@ class MoodViewHolder extends RecyclerView.ViewHolder {
         RelativeLayout.LayoutParams params = new RelativeLayout.LayoutParams(ViewGroup.LayoutParams.MATCH_PARENT, ViewGroup.LayoutParams.WRAP_CONTENT);
         params.height = (Resources.getSystem().getDisplayMetrics().heightPixels - getStatusBarHeight()) / 7;
         switch (position) {
-            case 6:
+            case 0:
                 this.mTextView.setText("Il y a une semaine");
                 break;
-            case 5:
+            case 1:
                 this.mTextView.setText("Il y a six jours");
                 break;
-            case 4:
+            case 2:
                 this.mTextView.setText("Il y a cinq jours");
                 break;
             case 3:
                 this.mTextView.setText("Il y a quatre jours");
                 break;
-            case 2:
+            case 4:
                 this.mTextView.setText("Il y a trois jours");
                 break;
-            case 1:
+            case 5:
                 this.mTextView.setText("Avant-hier");
                 break;
-            case 0:
+            case 6:
                 this.mTextView.setText("Hier");
                 break;
         }

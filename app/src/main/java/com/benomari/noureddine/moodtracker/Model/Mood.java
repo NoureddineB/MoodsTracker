@@ -13,7 +13,6 @@ public class Mood {
 
     public Mood(int mood,String messageMood) {
         mMood = mood;
-
         mMessageMood = messageMood;
     }
     public int getMood() {
